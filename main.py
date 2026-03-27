@@ -60,7 +60,7 @@ def main():
 
     plt.figure(figsize=(8, 5))
     plt.scatter(X, y, label="Datos")
-    plt.plot(x_line, y_line, label="Regresión lineal")
+    plt.plot(x_line, y_line, color='red', linewidth=2, label='Regresión lineal')  # <-- línea roja
     plt.xlabel(x_col)
     plt.ylabel(y_col)
     plt.title("Regresión Lineal Simple")
