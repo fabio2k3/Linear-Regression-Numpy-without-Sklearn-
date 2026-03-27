@@ -20,7 +20,7 @@ def load_selected_columns(csv_path, x_col, y_col):
             try:
                 x_values.append(float(row[x_col]))
                 y_values.append(float(row[y_col]))
-            except ValueError:
+            except (ValueError, KeyError):
                 continue
 
     X = np.array(x_values, dtype=float)

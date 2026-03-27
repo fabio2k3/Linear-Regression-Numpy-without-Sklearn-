@@ -14,10 +14,6 @@ class LinearRegressionGD:
     def _normalize_X(self, X):
         return (X - self.x_mean) / self.x_std
 
-    def predict(self, X):
-        X = np.asarray(X, dtype=float).flatten()
-        return self.m * X + self.b
-
     def fit(self, X, y):
         X = np.asarray(X, dtype=float).flatten()
         y = np.asarray(y, dtype=float).flatten()
@@ -25,7 +21,6 @@ class LinearRegressionGD:
         if X.shape[0] != y.shape[0]:
             raise ValueError("X e y deben tener la misma cantidad de elementos.")
 
-        # Normalización para evitar explosión del gradiente
         self.x_mean = X.mean()
         self.x_std = X.std()
         if self.x_std == 0:
@@ -36,6 +31,8 @@ class LinearRegressionGD:
         m = 0.0
         b = 0.0
         n = len(Xn)
+
+        self.loss_history = []
 
         for _ in range(self.epochs):
             y_pred = m * Xn + b
@@ -49,8 +46,11 @@ class LinearRegressionGD:
             mse = np.mean((y - y_pred) ** 2)
             self.loss_history.append(mse)
 
-        # Convertimos a parámetros en escala original
         self.m = m / self.x_std
         self.b = b - (m * self.x_mean / self.x_std)
 
         return self
+
+    def predict(self, X):
+        X = np.asarray(X, dtype=float).flatten()
+        return self.m * X + self.b
