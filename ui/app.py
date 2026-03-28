@@ -45,9 +45,9 @@ class DropArea(QFrame):
         )
 
         layout = QVBoxLayout(self)
-        self.label = QLabel("Arrastra y suelta aquí tu archivo CSV")
+        self.label = QLabel("Drag & drop your CSV dataset here\nor click to browse")
         self.label.setAlignment(Qt.AlignCenter)
-        self.label.setStyleSheet("font-size: 16px; padding: 20px;")
+        self.label.setStyleSheet("font-size: 16px; padding: 20px; color: #555;")
         layout.addWidget(self.label)
 
     def dragEnterEvent(self, event):
@@ -65,7 +65,19 @@ class DropArea(QFrame):
         if file_path.lower().endswith(".csv"):
             self.fileDropped.emit(file_path)
         else:
-            QMessageBox.warning(self, "Archivo inválido", "Solo se permiten archivos CSV.")
+            QMessageBox.warning(self, "Invalid file", "Please drop a CSV file only.")
+
+    # 🔥 NUEVO: click para abrir explorador
+    def mousePressEvent(self, event):
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Select CSV File",
+            "",
+            "CSV Files (*.csv)"
+        )
+
+        if file_path:
+            self.fileDropped.emit(file_path)
 
 
 class MplCanvas(FigureCanvas):
